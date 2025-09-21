@@ -6,10 +6,10 @@
       "use": "@vercel/static"
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/((?!alpha-tutor-extension.zip).*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
