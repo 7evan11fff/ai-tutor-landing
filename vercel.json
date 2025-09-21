@@ -2,13 +2,13 @@
   "version": 2,
   "builds": [
     {
-      "src": "index.html",
+      "src": "**/*",
       "use": "@vercel/static"
     }
   ],
   "rewrites": [
     {
-      "source": "/((?!alpha-tutor-extension.zip).*)",
+      "source": "/((?!alpha-tutor-extension.zip|styles.css|script.js).*)",
       "destination": "/index.html"
     }
   ],
@@ -27,6 +27,24 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
+        }
+      ]
+    },
+    {
+      "source": "/styles.css",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/css"
+        }
+      ]
+    },
+    {
+      "source": "/script.js",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
         }
       ]
     },
