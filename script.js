@@ -25,18 +25,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to handle download
     function handleDownload() {
-        // Create a temporary link element
-        const link = document.createElement('a');
-        link.href = 'alpha-tutor-extension.zip';
-        link.download = 'alpha-tutor-extension.zip';
-        
-        // Trigger download
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        // Show success notification
-        showNotification('Extension downloaded successfully! Follow the installation instructions in the README.', 'success');
+        try {
+            // Create a temporary link element
+            const link = document.createElement('a');
+            link.href = './alpha-tutor-extension.zip';
+            link.download = 'alpha-tutor-extension.zip';
+            link.style.display = 'none';
+            
+            // Add to DOM, click, then remove
+            document.body.appendChild(link);
+            link.click();
+            
+            // Clean up after a short delay
+            setTimeout(() => {
+                if (link.parentNode) {
+                    document.body.removeChild(link);
+                }
+            }, 100);
+            
+            // Show success notification
+            showNotification('Extension downloaded successfully! Follow the installation instructions in the README.', 'success');
+            
+        } catch (error) {
+            console.error('Download failed:', error);
+            showNotification('Download failed. Showing direct download option...', 'error');
+            // Show the direct download button as fallback
+            const directDownloadBtn = document.getElementById('directDownloadBtn');
+            if (directDownloadBtn) {
+                directDownloadBtn.style.display = 'inline-flex';
+            }
+        }
     }
 
     // Function to show notifications
@@ -58,11 +76,12 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
 
         // Add styles
+        const bgColor = type === 'error' ? '#e74c3c' : type === 'success' ? '#28ca42' : '#667eea';
         notification.style.cssText = `
             position: fixed;
             top: 20px;
             right: 20px;
-            background: ${type === 'info' ? '#667eea' : '#28ca42'};
+            background: ${bgColor};
             color: white;
             padding: 1rem 1.5rem;
             border-radius: 8px;
@@ -116,10 +135,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listeners
     if (downloadBtn) {
         downloadBtn.addEventListener('click', handleDownload);
+        // Add right-click context menu option
+        downloadBtn.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            const link = document.createElement('a');
+            link.href = './alpha-tutor-extension.zip';
+            link.download = 'alpha-tutor-extension.zip';
+            link.click();
+        });
     }
 
     if (downloadBtnBottom) {
         downloadBtnBottom.addEventListener('click', handleDownload);
+        // Add right-click context menu option
+        downloadBtnBottom.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            const link = document.createElement('a');
+            link.href = './alpha-tutor-extension.zip';
+            link.download = 'alpha-tutor-extension.zip';
+            link.click();
+        });
     }
 
     if (learnMoreBtn) {
